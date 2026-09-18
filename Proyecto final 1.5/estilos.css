@@ -1,0 +1,305 @@
+/* ============================================================
+   BAJO CERO · Hoja de estilos del Punto de Venta para heladería
+   ------------------------------------------------------------
+   Este archivo NO contiene lógica (eso está en interacciones.js).
+   Solo define apariencia: colores, tipografía, layout responsive,
+   tema claro/oscuro y el formato especial para impresión del ticket.
+============================================================ */
+
+/* ============================================================
+   1. VARIABLES CSS (tema claro)
+   ------------------------------------------------------------
+   Aquí se definen los "colores maestros" del proyecto como
+   variables (--nombre). En vez de escribir un color fijo en cada
+   regla, el resto del archivo usa var(--nombre). Así, si el tema
+   cambia (ver bloque [data-theme="dark"] más abajo), TODO el sitio
+   cambia de color automáticamente sin tocar ninguna otra línea.
+============================================================ */
+:root{
+  --cream:#FFF7EF;      /* fondo general de la página */
+  --paper:#FFFDFB;      /* fondo de inputs y tarjetas internas */
+  --ink:#2E2438;         /* color "tinta" para bordes fuertes y sombras */
+  --mint:#8FD9C4;        /* acento menta (botones secundarios, detalles) */
+  --mint-dark:#5FBFA3;   /* menta más oscuro, para hover y texto sobre menta */
+  --berry:#D6336C;       /* color principal de marca (rosa fresa/berry) */
+  --berry-dark:#B0265A;  /* berry oscuro, para estado hover */
+  --pink:#F7D3E3;        /* rosa pastel suave, para fondos y bordes decorativos */
+  --line:#EADCE6;        /* color de líneas/bordes discretos */
+  --red:#C23B4F;         /* color de error/alerta */
+  --shadow: 5px 5px 0 rgba(46,36,56,0.10); /* sombra "offset" tipo sticker */
+  --text:#2E2438;        /* color de texto principal */
+  --text-soft:#7A6E82;   /* color de texto secundario (subtítulos, ayudas) */
+  --card:#FFFFFF;        /* fondo de tarjetas/paneles */
+  --radius:14px;         /* radio de borde estándar para tarjetas */
+  --font-display:'Baloo 2', sans-serif; /* tipografía redondeada para títulos */
+  --font-body:'Inter', sans-serif;      /* tipografía para texto normal */
+}
+
+/* ============================================================
+   2. VARIABLES CSS (tema oscuro)
+   ------------------------------------------------------------
+   Cuando interacciones.js le pone el atributo data-theme="dark"
+   a la etiqueta <html>, el navegador empieza a usar ESTOS valores
+   en vez de los de :root, sin que ninguna otra regla CSS cambie.
+============================================================ */
+[data-theme="dark"]{
+  --cream:#241C2E;
+  --paper:#2B2238;
+  --ink:#FBF3F8;
+  --mint:#7FD8C0;
+  --mint-dark:#63C1A8;
+  --berry:#FF6FA0;
+  --berry-dark:#FF8FB5;
+  --pink:#3E2E45;
+  --line:#463A52;
+  --red:#FF8B8B;
+  --shadow: 5px 5px 0 rgba(0,0,0,0.35);
+  --text:#FBF3F8;
+  --text-soft:#C7B9CF;
+  --card:#2F2740;
+}
+
+/* ============================================================
+   3. RESET Y BASE
+   ------------------------------------------------------------
+   Reglas generales que se aplican a toda la página antes de
+   entrar en detalles de cada componente.
+============================================================ */
+*{box-sizing:border-box;} /* padding y border no aumentan el ancho/alto total de un elemento */
+html,body{margin:0;padding:0;} /* quita los márgenes por defecto del navegador */
+body{
+  font-family: var(--font-body);
+  background:var(--cream);
+  color:var(--text);
+  min-height:100vh; /* la página ocupa al menos toda la altura de la pantalla */
+  transition:background .3s ease, color .3s ease; /* animación suave al cambiar de tema */
+}
+h1,h2,h3,.brand{font-family:var(--font-display);} /* títulos con la tipografía redondeada */
+button{font-family:var(--font-body);cursor:pointer;}
+input,select,textarea{font-family:var(--font-body);}
+
+.hidden{display:none !important;} /* clase utilitaria: oculta cualquier elemento */
+
+/* ============================================================
+   4. TOPBAR (barra superior)
+============================================================ */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 28px;border-bottom:3px solid var(--pink);
+  background:var(--paper);
+}
+.brand{font-size:1.6rem;font-weight:700;letter-spacing:.2px;display:flex;align-items:center;gap:10px;color:var(--berry);}
+.brand small{display:block;font-family:var(--font-body);font-size:.66rem;font-weight:600;color:var(--text-soft);letter-spacing:.3px;}
+.topbar-actions{display:flex;align-items:center;gap:12px;}
+
+/* Botones tipo "píldora" de la barra superior (modo oscuro / cerrar sesión) */
+.pill-btn{
+  border:2px solid var(--berry);background:transparent;color:var(--berry);
+  padding:8px 14px;border-radius:20px;font-size:.82rem;font-weight:700;
+}
+.pill-btn:hover{background:var(--berry);color:#fff;}
+
+.user-chip{font-size:.85rem;color:var(--text-soft);}
+.user-chip b{color:var(--text);}
+
+/* ============================================================
+   5. PANTALLA DE LOGIN
+============================================================ */
+
+/* Contenedor de toda la pantalla de acceso: centra la tarjeta
+   y le pone un fondo decorativo con dos manchas de color
+   (gradientes radiales) simulando helado */
+.login-wrap{
+  min-height:calc(100vh - 78px);
+  display:flex;align-items:center;justify-content:center;
+  padding:30px 16px;
+  background:
+    radial-gradient(circle at 15% 20%, var(--pink) 0%, transparent 40%),
+    radial-gradient(circle at 85% 80%, var(--mint) 0%, transparent 35%),
+    var(--cream);
+}
+
+/* La tarjeta blanca donde viven los formularios de login/registro */
+.login-card{
+  background:var(--card);border:3px solid var(--ink);
+  box-shadow:var(--shadow);
+  width:100%;max-width:380px;padding:34px 32px;border-radius:var(--radius);
+}
+.login-card h1{font-size:1.8rem;margin:0 0 4px;color:var(--berry);}
+.login-card .sub{color:var(--text-soft);font-size:.88rem;margin-bottom:22px;}
+
+/* Estilo genérico para cada "campo" de formulario (label + input + error) */
+.field{margin-bottom:16px;}
+.field label{display:block;font-size:.78rem;font-weight:700;margin-bottom:6px;color:var(--text-soft);}
+.field input,.field select,.field textarea{
+  width:100%;padding:10px 12px;border:2px solid var(--line);border-radius:10px;
+  background:var(--paper);color:var(--text);font-size:.92rem;
+}
+.field input:focus,.field select:focus,.field textarea:focus{
+  outline:none;border-color:var(--mint-dark); /* resalta el campo activo con el color menta */
+}
+.field small.hint{display:block;margin-top:4px;font-size:.72rem;color:var(--text-soft);}
+
+/* Mensaje de error: oculto por defecto */
+.field small.error{display:none;margin-top:4px;font-size:.72rem;color:var(--red);font-weight:600;}
+
+/* ---- Validación visual ----
+   :invalid es una pseudo-clase NATIVA del navegador: se activa sola
+   cuando el valor del input no cumple required/pattern/min/max/etc.
+   La combinamos con la clase .touched (que interacciones.js agrega
+   cuando el usuario ya interactuó con el campo) para que el borde
+   rojo NO aparezca antes de que el usuario haya escrito algo. */
+.field input:invalid.touched{border-color:var(--red);}
+.field input:invalid.touched ~ small.error{display:block;} /* muestra el mensaje de error */
+
+/* Botón principal de los formularios (Entrar / Crear cuenta) */
+.btn-main{
+  width:100%;padding:12px;background:var(--berry);color:#fff;
+  border:none;border-radius:10px;font-weight:700;font-size:.95rem;letter-spacing:.2px;
+}
+.btn-main:hover{background:var(--berry-dark);}
+
+/* Enlace para alternar entre "Iniciar sesión" y "Crear cuenta" */
+.switch-form{margin-top:16px;text-align:center;font-size:.85rem;color:var(--text-soft);}
+.switch-form a{color:var(--mint-dark);font-weight:700;text-decoration:none;cursor:pointer;}
+
+/* Cajas de mensaje (error / éxito) del login y registro */
+.login-msg{padding:10px 12px;border-radius:10px;font-size:.82rem;margin-bottom:14px;font-weight:600;}
+.login-msg.err{background:rgba(194,59,79,0.12);color:var(--red);border:1.5px solid var(--red);}
+.login-msg.ok{background:rgba(143,217,196,0.25);color:var(--mint-dark);border:1.5px solid var(--mint);}
+
+/* ============================================================
+   6. LAYOUT DE LA APLICACIÓN (POS)
+============================================================ */
+
+/* Oculto por defecto (display:none): interacciones.js lo muestra
+   (display:block) recién cuando el login fue exitoso */
+.app-wrap{display:none;padding:24px 28px 60px;max-width:1280px;margin:0 auto;}
+
+/* Grid de 2 columnas: izquierda (catálogo/carrito) y derecha (cliente/ticket) */
+.app-grid{
+  display:grid;grid-template-columns: 1.15fr 1fr;gap:22px;align-items:start;
+}
+/* Responsive: en pantallas angostas (celular/tablet) se apila en 1 columna */
+@media (max-width: 900px){ .app-grid{grid-template-columns:1fr;} }
+
+/* Tarjeta blanca genérica que envuelve cada sección (Vitrina, Carrito, Cliente, etc.) */
+.panel{
+  background:var(--card);border:2px solid var(--line);border-radius:var(--radius);
+  padding:22px;margin-bottom:22px;
+}
+.panel h2{margin:0 0 4px;font-size:1.2rem;color:var(--berry);}
+.panel .panel-sub{color:var(--text-soft);font-size:.8rem;margin-bottom:16px;}
+
+/* Agrupadores <fieldset>/<legend> usados en los formularios */
+fieldset{border:2px dashed var(--line);border-radius:10px;padding:14px 16px 16px;margin:0 0 16px;}
+legend{padding:0 8px;font-family:var(--font-display);font-weight:600;font-size:.95rem;color:var(--mint-dark);}
+
+/* Grillas auxiliares para poner campos de formulario en columnas */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+@media (max-width:520px){.grid-2,.grid-3{grid-template-columns:1fr;}} /* en celular, 1 columna */
+
+/* ============================================================
+   7. VITRINA DE PRODUCTOS
+============================================================ */
+.menu-list{display:flex;flex-direction:column;gap:8px;max-height:280px;overflow-y:auto;padding-right:4px;margin-bottom:16px;}
+
+/* Cada fila de producto: nombre/categoría a la izquierda, precio y botón a la derecha */
+.menu-item{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:10px 12px;border:2px solid var(--line);border-radius:10px;
+  background:var(--paper);
+}
+.menu-item .mi-name{font-weight:700;font-size:.9rem;}
+.menu-item .mi-cat{font-size:.72rem;color:var(--text-soft);}
+.menu-item .mi-price{font-weight:800;color:var(--berry);}
+.menu-item button{
+  border:2px solid var(--mint-dark);background:transparent;color:var(--mint-dark);
+  padding:5px 12px;border-radius:16px;font-size:.78rem;font-weight:700;
+}
+.menu-item button:hover{background:var(--mint-dark);color:#fff;}
+
+/* ============================================================
+   8. TABLA DEL CARRITO
+============================================================ */
+table{width:100%;border-collapse:collapse;font-size:.85rem;} /* border-collapse une los bordes de las celdas */
+th,td{padding:8px 6px;text-align:left;border-bottom:1.5px solid var(--line);}
+th{font-size:.72rem;text-transform:uppercase;letter-spacing:.4px;color:var(--text-soft);font-weight:700;}
+td.num,th.num{text-align:right;} /* columnas numéricas alineadas a la derecha */
+.empty-row td{text-align:center;color:var(--text-soft);padding:18px 0;font-style:italic;} /* fila "carrito vacío" */
+.row-del{background:transparent;border:none;color:var(--red);font-weight:700;font-size:1rem;padding:0 6px;} /* botón ✕ para quitar producto */
+
+/* Bloque de totales debajo de la tabla */
+.totals{margin-top:14px;border-top:3px solid var(--ink);padding-top:10px;}
+.totals-row{display:flex;justify-content:space-between;font-size:.9rem;padding:3px 0;}
+.totals-row.grand{font-size:1.2rem;font-weight:800;font-family:var(--font-display);margin-top:6px;color:var(--berry);} /* fila "Total" resaltada */
+
+/* ============================================================
+   9. BOTONES DE ACCIÓN GENERALES
+============================================================ */
+.actions-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;}
+.btn{
+  padding:10px 16px;border-radius:10px;font-weight:700;font-size:.85rem;border:2px solid var(--ink);
+  background:transparent;color:var(--text);
+}
+.btn:hover{background:var(--ink);color:var(--paper);}
+.btn.primary{background:var(--mint-dark);color:#fff;border-color:var(--mint-dark);} /* botón de acción principal */
+.btn.primary:hover{background:var(--mint);color:var(--ink);}
+.btn.ghost-red{border-color:var(--red);color:var(--red);} /* botón de acción "destructiva" (ej. Nueva venta) */
+.btn.ghost-red:hover{background:var(--red);color:#fff;}
+.btn:disabled{opacity:.4;cursor:not-allowed;}
+.btn:disabled:hover{background:transparent;color:var(--text);}
+
+/* ============================================================
+   10. TICKET / COMPROBANTE
+============================================================ */
+#ticket-area{display:none;} /* oculto hasta que interacciones.js inyecte el HTML del ticket */
+.ticket{
+  background:var(--paper);border:2px dashed var(--ink);padding:20px;border-radius:10px;
+  font-family: 'Inter', monospace;font-size:.85rem;max-width:340px;margin:0 auto;
+}
+.ticket h3{text-align:center;font-family:var(--font-display);margin:0 0 2px;color:var(--berry);}
+.ticket .t-sub{text-align:center;font-size:.7rem;color:var(--text-soft);margin-bottom:10px;}
+.ticket hr{border:none;border-top:1.5px dashed var(--text-soft);margin:8px 0;} /* línea punteada tipo recibo */
+.ticket table{font-size:.78rem;}
+.ticket td,.ticket th{padding:3px 2px;border:none;}
+
+/* ============================================================
+   11. HISTORIAL DE VENTAS
+============================================================ */
+.history-item{
+  display:flex;justify-content:space-between;align-items:center;padding:9px 4px;border-bottom:1.5px solid var(--line);font-size:.83rem;
+}
+.history-item .h-meta{color:var(--text-soft);font-size:.72rem;}
+.history-item button{background:transparent;border:1.5px solid var(--line);border-radius:14px;padding:4px 10px;font-size:.72rem;font-weight:700;color:var(--text);}
+.history-item button:hover{border-color:var(--berry);color:var(--berry);}
+
+/* ============================================================
+   12. NOTIFICACIÓN FLOTANTE (toast)
+   ------------------------------------------------------------
+   Aparece y desaparece con una transición de opacidad y de
+   posición (translateY). La clase .show la agrega interacciones.js
+   cuando quiere mostrar un aviso (ej. "Producto agregado").
+============================================================ */
+.toast{
+  position:fixed;bottom:22px;right:22px;background:var(--ink);color:var(--paper);
+  padding:12px 18px;border-radius:12px;font-size:.85rem;font-weight:600;
+  box-shadow:var(--shadow);opacity:0;transform:translateY(10px);transition:all .25s ease;z-index:50;
+}
+.toast.show{opacity:1;transform:translateY(0);}
+
+/* ============================================================
+   13. ESTILOS DE IMPRESIÓN
+   ------------------------------------------------------------
+   Estas reglas SOLO se aplican cuando el navegador está imprimiendo
+   (Ctrl+P) o generando el PDF desde el botón "Imprimir". La idea es
+   ocultar todo excepto el ticket, para que salga limpio en el papel.
+============================================================ */
+@media print{
+  body *{visibility:hidden;} /* oculta absolutamente todo primero... */
+  #ticket-area, #ticket-area *{visibility:visible;} /* ...y vuelve a mostrar solo el ticket */
+  #ticket-area{display:block !important;position:absolute;left:0;top:0;width:100%;} /* lo pone arriba a la izquierda de la hoja */
+  .ticket{border:none;max-width:100%;} /* sin el borde punteado decorativo al imprimir */
+  .no-print{display:none !important;} /* oculta botones de acción (Imprimir/PDF/Excel) que no deben salir en el papel */
+}
